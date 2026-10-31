@@ -7,12 +7,13 @@ export type Placement = {
   cost: number;
   price: number;
 };
-type Event = {
+export type Event = {
   id: string;
   placementId: string;
   kind: "visit" | "purchase";
   at: string;
   amount?: number;
+  visitorId?: string;
 };
 export type Demo = { placements: Placement[]; events: Event[] };
 
@@ -142,6 +143,7 @@ export function parseDemo(saved: string): Demo | null {
       if (!e || typeof e.id !== "string" || !e.id || eventIds.has(e.id) ||
           !ids.has(e.placementId) || (e.kind !== "visit" && e.kind !== "purchase") ||
           typeof e.at !== "string" || Number.isNaN(Date.parse(e.at)) ||
+          (e.visitorId !== undefined && (typeof e.visitorId !== "string" || !e.visitorId || e.visitorId.length > 128)) ||
           (e.kind === "purchase" && (!Number.isInteger(e.amount) || e.amount! < 1 || e.amount! > 100000000))) return null;
       eventIds.add(e.id);
     }

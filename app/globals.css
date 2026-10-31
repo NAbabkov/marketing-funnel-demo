@@ -127,3 +127,30 @@ h2 { font-size: 20px; line-height: 1.2; letter-spacing: -.5px; }
 .post-excerpt { margin: 26px 0; color: #514a59; line-height: 1.6; overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { .day-column.highlight-today, .day-column.highlight-today .day-heading { animation: none; background-color: #dcebb6; } }
 @media (max-width: 720px) { .week-controls { flex-wrap: wrap; } }
+
+/* Сравнение правил атрибуции внутри единого раздела аналитики. */
+.attribution-warning { background: #f4f0fb; color: #665b77; border-radius: 8px; padding: 13px 15px; font-size: 12px; line-height: 1.55; }
+.attribution-warning strong { color: #443956; }
+.model-picker { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 19px; }
+.model-option { border: 1px solid #ded9e7; border-radius: 8px; background: #fffefa; color: #5d536a; padding: 9px 12px; font-size: 12px; font-weight: 700; }
+.model-option:hover { background: #f6f2fc; }
+.model-option.active { background: #eee8fb; border-color: #9a82da; color: #513a8c; }
+.model-description, .attribution-help, .attribution-paths > p { color: #77707d; font-size: 12px; line-height: 1.6; margin-top: 11px; }
+.attribution-filters { display: grid; grid-template-columns: repeat(5,minmax(130px,1fr)); gap: 12px; margin-top: 20px; }
+.attribution-filters label { display: grid; gap: 7px; color: #716a78; font-size: 11px; font-weight: 700; }
+.attribution-filters select { width: 100%; min-width: 0; border: 1px solid #dedbd2; border-radius: 7px; padding: 9px; background: #fffefa; color: #332e40; font: inherit; }
+.attribution-filters select:disabled { opacity: .45; }
+.attribution-summary { display: flex; flex-wrap: wrap; gap: 25px; margin: 21px 0 10px; color: #807887; font-size: 11px; }
+.attribution-summary strong { display: block; color: #302a3a; margin-top: 4px; font-size: 18px; }
+.attribution-table { min-width: 1040px; }
+.attribution-table .selected-model { background: #f5f1fd; }
+.attribution-paths { border-top: 1px solid #ebe8e1; margin-top: 20px; padding-top: 17px; }
+.attribution-paths summary { cursor: pointer; font-size: 13px; font-weight: 750; color: #44365d; }
+.attribution-paths summary span { color: #968d9b; margin-left: 6px; font-weight: 500; }
+.path-list { display: grid; gap: 8px; margin-top: 14px; }
+.path-item { background: #f9f8f3; border: 1px solid #efede5; border-radius: 8px; padding: 12px; }
+.path-item > div { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
+.path-item > div span, .path-item small { color: #89818c; font-size: 11px; }
+.path-item p { font-size: 12px; color: #51485d; margin: 7px 0 4px; line-height: 1.45; }
+@media (max-width: 1100px) { .attribution-filters { grid-template-columns: repeat(3,minmax(120px,1fr)); } }
+@media (max-width: 760px) { .attribution-filters { grid-template-columns: repeat(2,minmax(0,1fr)); } .attribution-heading { flex-wrap: wrap; } }

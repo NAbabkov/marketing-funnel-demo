@@ -22,6 +22,7 @@ import {
 
 import { addDays, dateKey, dateLabel, dayName, makeDemo, metrics, number, parseDate, percent, plural, rub, startOfWeek, uid, type Placement } from "./demo";
 import { useDemo } from "./useDemo";
+import AttributionPanel from "./AttributionPanel";
 import posts from "./posts.json";
 
 type Tab = "calendar" | "analytics";
@@ -43,6 +44,7 @@ export default function Home() {
   const [ref, setRef] = useState<string | null>(null);
   const [bought, setBought] = useState(false);
   const tracked = useRef(false);
+  const visitorId = useRef<string | undefined>(undefined);
   const dialogOpen = adding || Boolean(data?.placements.some((p) => p.id === selected)) || posts.some((post) => post.url === selected);
   useEffect(() => () => { if (highlightTimer.current) clearTimeout(highlightTimer.current); }, []);
 
@@ -69,12 +71,21 @@ export default function Home() {
   }, [adding, selected, dialogOpen]);
 
   useEffect(() => {
+    // Псевдоним остаётся в этом браузере и нужен только для демонстрации пути.
+    if (!visitorId.current) {
+      try {
+        const key = "marketing-demo-browser-id";
+        const saved = localStorage.getItem(key);
+        visitorId.current = saved && saved.length <= 128 ? saved : uid();
+        if (!saved || saved.length > 128) localStorage.setItem(key, visitorId.current);
+      } catch { visitorId.current = uid(); }
+    }
     setRef(new URLSearchParams(window.location.search).get("ref"));
   }, []);
   useEffect(() => {
     if (!data || !ref || tracked.current || !data.placements.some((p) => p.id === ref)) return;
     tracked.current = true;
-    const visit = { id: uid(), placementId: ref, kind: "visit" as const, at: new Date().toISOString() };
+    const visit = { id: uid(), placementId: ref, kind: "visit" as const, at: new Date().toISOString(), visitorId: visitorId.current };
     void updateData((current) => current.placements.some((p) => p.id === ref)
       ? { ...current, events: [...current.events, visit] }
       : current);
@@ -198,7 +209,7 @@ export default function Home() {
                 onClick={() => {
                   const purchase = {
                     id: uid(), placementId: landing.id, kind: "purchase" as const,
-                    at: new Date().toISOString(), amount: landing.price,
+                    at: new Date().toISOString(), amount: landing.price, visitorId: visitorId.current,
                   };
                   void updateData((current) => current.placements.some((p) => p.id === landing.id)
                     ? { ...current, events: [...current.events, purchase] }
@@ -490,12 +501,13 @@ export default function Home() {
                   </div>
                 </div>
               </section>
+              <AttributionPanel data={data} onSelectPlacement={setSelected} />
               <section className="panel">
                 <div className="panel-heading">
                   <div>
                     <span className="section-kicker">СРАВНЕНИЕ</span>
-                    <h2>Результаты размещений</h2>
-                    <p>Все данные в таблице относятся к этому браузеру.</p>
+                    <h2>Прямые результаты размещений</h2>
+                    <p>Покупки по открытой ссылке, без распределения между предыдущими касаниями.</p>
                   </div>
                   <span className="mini-label">
                     {data.placements.length}{" "}
