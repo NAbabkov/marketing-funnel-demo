@@ -68,7 +68,7 @@ export function useDemo() {
   useEffect(() => {
     if (!data || migrated.current) return;
     migrated.current = true;
-    void updateData(includeArchiveExamples);
+    if (includeArchiveExamples(data) !== data) void updateData(includeArchiveExamples);
   }, [data, updateData]);
   return { data, updateData, storageError };
 }
